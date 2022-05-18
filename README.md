@@ -11,7 +11,7 @@ Example application for an e-commerce website
 ### Kubernetes Ingress
 
 - Install ingress-nginx with [Helm](https://kubernetes.github.io/ingress-nginx/deploy/#quick-start)
-- Add '127.0.0.1 ticketing.dev' to /etc/hosts
+- Add `127.0.0.1 ticketing.dev` to /etc/hosts
 - Check for something other than Docker running on port 80
   - `sudo lsof -i tcp:80`
 
