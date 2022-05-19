@@ -15,8 +15,21 @@ Example application for an e-commerce website
 - Check for something other than Docker running on port 80
   - `sudo lsof -i tcp:80`
 
-### Cleanup
+### Kubernetes Cleanup
 
 - Stop skaffold with `<kbd>Ctrl</kbd> C`
 - Stop kubernetes ingress nginx with `helm uninstall ingress-nginx -n ingress-nginx`
+
+### ExpressJS
+
+- [Error Handling](https://expressjs.com/en/guide/error-handling.html_)
+
+## Services
+
+### Auth
+
+- `npm install express-validator`
+  - Helpful validation for user signup
+- `npm install express-async-errors`
+  - Makes sure that if we throw an error inside an async function, express will listen for it
   
