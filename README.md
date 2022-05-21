@@ -32,4 +32,8 @@ Example application for an e-commerce website
   - Helpful validation for user signup
 - `npm install express-async-errors`
   - Makes sure that if we throw an error inside an async function, express will listen for it
+- `npm install mongoose`
+  - Interacting with mongoDB instance
+- `npm install @types/mongoose`
+  - For typescript
   
