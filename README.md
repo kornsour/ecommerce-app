@@ -43,6 +43,9 @@ Example application for an e-commerce website
   - Doesn't rely on backend data store
 - `npm install jsonwebtoken @types/jsonwebtoken`
   - Generating and verifying jwts
+- `npm install --save-dev @types/jest @types/supertest jest ts-jest supertest mongodb-memory-server`
+  - Testing dependencies
+  - Copy of MongoDB in memory so that we can easily test multiple DBs at same time
   
 ### Secrets
 
