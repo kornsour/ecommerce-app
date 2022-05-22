@@ -8,6 +8,11 @@ Example application for an e-commerce website
 
 - Start with `skaffold dev`
 
+### Kubernetes Troubleshooting
+
+- `kubectl get pods`
+- `kubctl describe pod my-pod-name`
+
 ### Kubernetes Ingress
 
 - Install ingress-nginx with [Helm](https://kubernetes.github.io/ingress-nginx/deploy/#quick-start)
@@ -32,8 +37,15 @@ Example application for an e-commerce website
   - Helpful validation for user signup
 - `npm install express-async-errors`
   - Makes sure that if we throw an error inside an async function, express will listen for it
-- `npm install mongoose`
+- `npm install mongoose @types/mongoose`
   - Interacting with mongoDB instance
-- `npm install @types/mongoose`
-  - For typescript
+- `npm install cookie-session @types/cookie-session`
+  - Doesn't rely on backend data store
+- `npm install jsonwebtoken @types/jsonwebtoken`
+  - Generating and verifying jwts
   
+### Secrets
+
+- Example for creating secret 'asdf'
+  - `kubectl create secret generic jwt-secret --from-literal=JWT_KEY=asdf`
+  - `kubectl get secrets`

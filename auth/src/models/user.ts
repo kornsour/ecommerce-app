@@ -35,6 +35,19 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     }
+}, {
+    // Massaging data that is returned to the user
+    // to standardize across services
+    //
+    // Consider moving this to view level logic in a typical MVC
+    toJSON: {
+        transform(doc, ret) {
+            ret.id = ret._id;
+            delete ret._id;
+            delete ret.password;
+            delete ret.__v;
+        }
+    }
 });
 
 userSchema.statics.build = (attrs: UserAttrs) => {
