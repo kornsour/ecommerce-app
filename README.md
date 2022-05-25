@@ -29,6 +29,13 @@ Example application for an e-commerce website
 
 - [Error Handling](https://expressjs.com/en/guide/error-handling.html_)
 
+### Test
+
+`npm run test`
+
+- NOTE: May not see yout test changes with TypeScript from time to time
+  - Simply stop (Ctrl C) and restart jest if this happens
+
 ## Services
 
 ### Auth

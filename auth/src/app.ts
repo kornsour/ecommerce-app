@@ -21,8 +21,9 @@ app.use(
         // disabling encryption because 
         // json web tokens are already encrypted
         signed: false,
-        // requires https connection
-        secure: true
+        // requires https connection if true
+        // Jest sets env var to test on run
+        secure: process.env.NODE_ENV !== 'test'
     })
 );
 
