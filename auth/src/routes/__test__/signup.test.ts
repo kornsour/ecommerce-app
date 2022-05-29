@@ -77,6 +77,8 @@ it('disallows duplicate emails', async () => {
       
 });
 
+// This will fail unless 'secure' option for cookieSession
+// is set to false in app.ts
 it('sets a cookie after successful signup', async () => {
     const response = await request(app)
       .post('/api/users/signup')
@@ -87,4 +89,4 @@ it('sets a cookie after successful signup', async () => {
       .expect(201);
     
     expect(response.get('Set-Cookie')).toBeDefined();
-})
+});

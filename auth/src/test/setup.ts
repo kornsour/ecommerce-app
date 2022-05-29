@@ -1,6 +1,13 @@
+import cookieSession from 'cookie-session';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
+import request from 'supertest';
 import { app } from '../app';
+
+// sets new global signin funcion for TypeScript
+declare global {
+  var getAuthCookie: () => Promise<string[]>;
+}
 
 // Create new instance of MongoDB in memory before tests run
 
@@ -29,3 +36,20 @@ afterAll(async () => {
     await mongo.stop();
     await mongoose.connection.close();
 })
+
+global.getAuthCookie = async () => {
+  const email = 'test@test.com';
+  const password = 'password';
+
+  const response = await request(app)
+    .post('/api/users/signup')
+    .send({
+      email, 
+      password
+    })
+    .expect(201);
+
+  const cookie = response.get('Set-Cookie');
+  
+  return cookie;
+};
