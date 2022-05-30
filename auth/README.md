@@ -1,5 +1,10 @@
-# Deps
+# Auth Service
 
-npm install typescript ts-node-dev express @types/express
+Handles authentication for the application
 
-npm start
+## Routes
+
+- signin
+- signup
+- current-user
+- signout
