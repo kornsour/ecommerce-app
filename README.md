@@ -10,8 +10,9 @@ Example application for an e-commerce website
 
 ### Kubernetes Troubleshooting
 
-- `kubectl get pods`
-- `kubctl describe pod my-pod-name`
+- To get list of pods: `kubectl get pods`
+- To get details of a pod: `kubctl describe pod my-pod-name`
+- To start a shell inside a pod: `kubectl exec -it my-pod-name-123 -- sh`
 
 ### Kubernetes Ingress
 
@@ -57,6 +58,9 @@ Example application for an e-commerce website
 ### Common Library
 
 The common library used between services can be found [here](https://github.com/kornsour/ecommerce-common)
+
+To add the common module: `npm install @kornorg/common`
+To update the module: `npm update @kornorg/common`
   
 ### Secrets
 
