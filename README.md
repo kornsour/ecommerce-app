@@ -53,6 +53,12 @@ Example application for an e-commerce website
 - `npm install --save-dev @types/jest @types/supertest jest ts-jest supertest mongodb-memory-server`
   - Testing dependencies
   - Copy of MongoDB in memory so that we can easily test multiple DBs at same time
+
+### Common Library
+
+- `npm install typescript del-cli --save-dev`
+  - `--save-dev` when you only want dependencies for development
+  - They do not get installed when adding the package to another service
   
 ### Secrets
 
