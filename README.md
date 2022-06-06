@@ -22,7 +22,7 @@ Example application for an e-commerce website
 
 ### Kubernetes Cleanup
 
-- Stop skaffold with <kbd>Ctrl</kbd> `C`
+- Stop skaffold with <kbd>Ctrl</kbd> + `C`
 - Stop kubernetes ingress nginx with `helm uninstall ingress-nginx -n ingress-nginx`
 
 ### ExpressJS
