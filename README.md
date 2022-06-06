@@ -56,9 +56,7 @@ Example application for an e-commerce website
 
 ### Common Library
 
-- `npm install typescript del-cli --save-dev`
-  - `--save-dev` when you only want dependencies for development
-  - They do not get installed when adding the package to another service
+The common library used between services can be found [here](https://github.com/kornsour/ecommerce-common)
   
 ### Secrets
 
