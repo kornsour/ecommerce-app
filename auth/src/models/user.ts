@@ -42,6 +42,8 @@ const userSchema = new mongoose.Schema({
     // Consider moving this to view level logic in a typical MVC
     toJSON: {
         transform(doc, ret) {
+            // Get rid of Mongo _id syntax
+            // For similar syntax to other potential DBs in the app
             ret.id = ret._id;
             delete ret._id;
             delete ret.password;

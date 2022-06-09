@@ -34,7 +34,7 @@ beforeEach(async () => {
 afterAll(async () => {
     await mongo.stop();
     await mongoose.connection.close();
-})
+});
 
 global.getAuthCookie = async () => {
   const email = 'test@test.com';
