@@ -61,6 +61,16 @@ The common library used between services can be found [here](https://github.com/
 
 To add the common module: `npm install @kornorg/common`
 To update the module: `npm update @kornorg/common`
+
+### NATS Test
+
+For development, we can forward the NATS port to our localhost port so that scripts outside Kubernetes can find it:
+`kubectl get pods`
+`kubectl port-forward <nats-pod-name> 4222:4222`
+
+Run publish and listen scripts:
+`npm run publish`
+`npm run listen`
   
 ### Secrets
 
