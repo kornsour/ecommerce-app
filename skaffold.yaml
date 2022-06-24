@@ -5,7 +5,7 @@ build:
   local:
     push: false
   artifacts:
-    - image: aj56321/auth
+    - image: kornsour/auth
       context: auth
       docker:
         dockerfile: Dockerfile
@@ -13,7 +13,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: aj56321/client
+    - image: kornsour/client
       context: client
       docker:
         dockerfile: Dockerfile
@@ -21,7 +21,7 @@ build:
         manual:
           - src: '**/*.js'
             dest: .
-    - image: aj56321/tickets
+    - image: kornsour/tickets
       context: tickets
       docker:
         dockerfile: Dockerfile

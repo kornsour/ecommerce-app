@@ -1,35 +1,23 @@
-import nats, { Message } from 'node-nats-streaming';
+import nats from 'node-nats-streaming';
 import { randomBytes } from 'crypto';
+import { TicketCreatedListener } from './events/ticket-created-listener';
 
 console.clear();
 
-// Creating random id string for listener ID
-// NATS can't have two listeners with the same ID connect to it
 const stan = nats.connect('ticketing', randomBytes(4).toString('hex'), {
-    url: 'http://localhost:4222'
+  url: 'http://localhost:4222',
 });
 
 stan.on('connect', () => {
-    console.log('Listener connected to NATS');
+  console.log('Listener connected to NATS');
 
-    const options = stan
-      .subscriptionOptions()
-      // Manual acknowledgement
-      .setManualAckMode(true);
+  stan.on('close', () => {
+    console.log('NATS connection closed!');
+    process.exit();
+  });
 
-    const subscription = stan.subscribe(
-        'ticket:created',
-        'orders-service-queue-group',
-        options
-    );
-
-    subscription.on('message', (msg) => {
-        const data = msg.getData();
-
-        if (typeof data === 'string') {
-            console.log(`Received event #${msg.getSequence()}, with data: ${data}`);
-        }
-
-        msg.ack();
-    });
+  new TicketCreatedListener(stan).listen();
 });
+
+process.on('SIGINT', () => stan.close());
+process.on('SIGTERM', () => stan.close());

@@ -77,3 +77,7 @@ Run publish and listen scripts:
 - Example for creating secret 'asdf'
   - `kubectl create secret generic jwt-secret --from-literal=JWT_KEY=asdf`
   - `kubectl get secrets`
+
+## TypeScript
+
+- [readonly Modifer](https://www.typescriptlang.org/docs/handbook/2/classes.html#readonly)
