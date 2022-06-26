@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 import { app } from './app';
+import { natsWrapper } from './nats-wrapper'
 
 const start = async () => {
     // Make sure env variables have been set on startup
@@ -13,6 +14,9 @@ const start = async () => {
     }
 
     try {
+        // cluster ID defined in k8s deployment
+        // service url defined in k8s deployment
+        await natsWrapper.connect('ticketing', 'alsdkfj', 'http://nats-srv:4222' );
         await mongoose.connect(process.env.MONGO_URI);
         console.log('Connected to mongoDB');
     } catch (err) {
