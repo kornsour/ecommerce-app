@@ -1,0 +1,83 @@
+name: CI
+
+# Repo-local CI rather than the shared kornsour/gh-automation ci.yml: that one
+# assumes a single pnpm package with Biome and Vitest, and this repo is a
+# four-service npm monorepo on Jest with no root package.json.
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Self-hosted runners are opt-in via the USE_SELF_HOSTED_RUNNER repo var, and
+# additionally gated to private repos: on a public repo a fork PR could run
+# arbitrary code on the runner, so public callers always get GitHub-hosted
+# regardless of the var.
+env:
+  NODE_VERSION: "24"
+
+jobs:
+  typecheck:
+    name: Type check (${{ matrix.service }})
+    runs-on: ${{ fromJSON(vars.USE_SELF_HOSTED_RUNNER == 'true' && github.event.repository.private && '["self-hosted","Linux","X64"]' || '["ubuntu-latest"]') }}
+    strategy:
+      fail-fast: false
+      # `client` is plain JavaScript with no tsconfig — it is covered by the
+      # build job instead.
+      matrix:
+        service: [auth, tickets, nats-test]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ${{ matrix.service }}/package-lock.json
+      - run: npm ci
+        working-directory: ${{ matrix.service }}
+      - run: npx tsc --noEmit
+        working-directory: ${{ matrix.service }}
+
+  test:
+    name: Tests (${{ matrix.service }})
+    runs-on: ${{ fromJSON(vars.USE_SELF_HOSTED_RUNNER == 'true' && github.event.repository.private && '["self-hosted","Linux","X64"]' || '["ubuntu-latest"]') }}
+    strategy:
+      fail-fast: false
+      matrix:
+        service: [auth, tickets]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ${{ matrix.service }}/package-lock.json
+      - run: npm ci
+        working-directory: ${{ matrix.service }}
+      # The package script is `jest --watchAll`, which never exits. Invoke jest
+      # directly so CI terminates.
+      - run: npx jest --watchAll=false --ci
+        working-directory: ${{ matrix.service }}
+
+  build:
+    name: Build (client)
+    runs-on: ${{ fromJSON(vars.USE_SELF_HOSTED_RUNNER == 'true' && github.event.repository.private && '["self-hosted","Linux","X64"]' || '["ubuntu-latest"]') }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+      - run: npm ci
+        working-directory: client
+      - run: npx next build
+        working-directory: client
