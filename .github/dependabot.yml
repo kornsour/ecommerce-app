@@ -1,0 +1,46 @@
+version: 2
+updates:
+  # npm dependencies for the four services in this monorepo. There is no root
+  # package.json (the root yarn.lock is a leftover stub), so each service is
+  # listed explicitly. `directories` batches them into one grouped PR per week
+  # instead of one per service — matching how the existing security PRs already
+  # arrive ("Bump the npm_and_yarn group across 3 directories").
+  #
+  # Minor/patch are grouped and auto-merged once checks pass. Majors come as
+  # individual PRs for manual review.
+  - package-ecosystem: "npm"
+    directories:
+      - "/auth"
+      - "/client"
+      - "/tickets"
+      - "/nats-test"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "kornsour"
+    labels:
+      - "dependencies"
+    groups:
+      npm-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # GitHub Actions pinned in workflows. Grouped so all action bumps arrive as one
+  # PR, keeping CI runs (and minutes) to a minimum.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "ci"
+    groups:
+      actions:
+        patterns:
+          - "*"
