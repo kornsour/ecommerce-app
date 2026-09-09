@@ -32,6 +32,7 @@
 					{ "context": "Type check (tickets)" },
 					{ "context": "Type check (nats-test)" },
 					{ "context": "Tests (auth)" },
+					{ "context": "Tests (tickets)" },
 					{ "context": "Build (client)" }
 				]
 			}
