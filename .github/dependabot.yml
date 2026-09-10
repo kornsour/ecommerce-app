@@ -23,9 +23,27 @@ updates:
     labels:
       - "dependencies"
     groups:
+      # @types/* packages are split out deliberately. Dependabot reports a
+      # group's update-type as the HIGHEST across its members, and these repos
+      # carry companion type packages that lag badly behind their runtime
+      # package (@types/jest was on 27 while jest was on 30). One such major
+      # drags the whole group to semver-major, so the auto-merge workflow routes
+      # the entire weekly batch to manual review and nothing merges itself.
+      #
+      # Listed first because the first matching group wins; exclude-patterns on
+      # the catch-all below makes the split explicit either way. A stale type
+      # package now only blocks the types batch, never the runtime one.
+      types-minor-patch:
+        patterns:
+          - "@types/*"
+        update-types:
+          - "minor"
+          - "patch"
       npm-minor-patch:
         patterns:
           - "*"
+        exclude-patterns:
+          - "@types/*"
         update-types:
           - "minor"
           - "patch"
