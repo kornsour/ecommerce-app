@@ -20,6 +20,7 @@ interface UserModel extends mongoose.Model<UserDoc> {
 // Would add extra properties here if we deicde
 // to have more
 interface UserDoc extends mongoose.Document {
+    id: string;
     email: string;
     password: string;
 }
@@ -44,10 +45,8 @@ const userSchema = new mongoose.Schema({
         transform(doc, ret) {
             // Get rid of Mongo _id syntax
             // For similar syntax to other potential DBs in the app
-            ret.id = ret._id;
-            delete ret._id;
-            delete ret.password;
-            delete ret.__v;
+            const { _id, password, __v, ...user } = ret;
+            return { ...user, id: _id };
         }
     }
 });
@@ -60,18 +59,14 @@ userSchema.statics.build = (attrs: UserAttrs) => {
 // using an arrow => function would overwrite
 // "this" inside the function and would be equal
 // to the context of the entire file
-userSchema.pre('save', async function(done) {
+userSchema.pre('save', async function() {
     // will return true even if being created for first time
     if (this.isModified('password')) {
         const hashed = await Password.toHash(this.get('password'));
         this.set('password', hashed);
     }
-    // Mongoose doesn't have great out of the box
-    // support for async functions
-
-    // So we are responsible for letting
-    // mongoose know when we're done
-    done();
+    // Mongoose 9 removed the `next`/`done` callback from middleware;
+    // an async function resolving is what signals completion.
 });
 
 const User = mongoose.model<UserDoc, UserModel>('User', userSchema);
