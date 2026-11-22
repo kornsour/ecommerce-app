@@ -56,6 +56,9 @@ global.getAuthCookie = async () => {
     .expect(201);
 
   const cookie = response.get('Set-Cookie');
-  
+  if (!cookie) {
+    throw new Error('Signup response did not set a cookie');
+  }
+
   return cookie;
 };
