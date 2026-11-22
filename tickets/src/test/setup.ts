@@ -27,7 +27,7 @@ beforeAll(async () => {
   mongo = await MongoMemoryServer.create();
   const mongoUri = mongo.getUri();
 
-  await mongoose.connect(mongoUri);
+  await mongoose.connect(mongoUri, { runtimeAdapters: { os: require('os') } });
 });
 
 beforeEach(async () => {
@@ -43,8 +43,10 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-    await mongo.stop();
+    // Close the client before stopping the server: with the Mongoose 9 driver,
+    // stopping the server first leaves the client reconnecting and can hang.
     await mongoose.connection.close();
+    await mongo.stop();
 });
 
 global.getAuthCookie = () => {
