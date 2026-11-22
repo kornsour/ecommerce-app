@@ -27,19 +27,26 @@ beforeAll(async () => {
   mongo = await MongoMemoryServer.create();
   const mongoUri = mongo.getUri();
 
-  await mongoose.connect(mongoUri);
+  await mongoose.connect(mongoUri, { runtimeAdapters: { os: require('os') } });
 });
 
 beforeEach(async () => {
-  const collections = await mongoose.connection.db.collections();
+  const db = mongoose.connection.db;
+  if (!db) {
+    throw new Error('MongoDB connection is not established');
+  }
+
+  const collections = await db.collections();
   for (let collection of collections) {
       await collection.deleteMany({});
   }
 });
 
 afterAll(async () => {
-    await mongo.stop();
+    // Close the client before stopping the server: with the Mongoose 9 driver,
+    // stopping the server first leaves the client reconnecting and can hang.
     await mongoose.connection.close();
+    await mongo.stop();
 });
 
 global.getAuthCookie = () => {

@@ -10,6 +10,7 @@ interface TicketAttrs {
 
 // Properties that a Ticket has
 interface TicketDoc extends mongoose.Document {
+  id: string;
   title: string;
   price: number;
   userId: string;
@@ -37,8 +38,8 @@ const ticketSchema = new mongoose.Schema({
 }, {
     toJSON: {
         transform(doc, ret) {
-            ret.id = ret._id;
-            delete ret._id;
+            const { _id, ...ticket } = ret;
+            return { ...ticket, id: _id };
         }
     }
 });
