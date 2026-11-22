@@ -21,7 +21,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@kornorg/common": "^1.0.2",
+    "@kornorg/common": "^2.0.0",
     "@types/cookie-session": "^2.0.44",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
