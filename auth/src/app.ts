@@ -1,6 +1,4 @@
-import express from 'express';
-import 'express-async-errors';
-import { json } from 'body-parser';
+import express, { json } from 'express';
 import cookieSession from 'cookie-session';
 import { errorHandler, NotFoundError } from '@kornorg/common';
 
@@ -30,8 +28,11 @@ app.use(signinRouter);
 app.use(signoutRouter);
 app.use(signupRouter);
 
-app.all('*', async (req, res) => {
-    // works because of express-async-error module
+// Express 5 (path-to-regexp 8) no longer accepts a bare '*'; a wildcard must
+// be named. '/{*splat}' also matches '/'.
+app.all('/{*splat}', async (req, res) => {
+    // Express 5 forwards a rejected promise from an async handler to the
+    // error handler itself, so express-async-errors is no longer needed.
     throw new NotFoundError();
 });
 

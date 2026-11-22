@@ -2,8 +2,8 @@
 // in src/test/setup.ts.
 //
 // The real wrapper's `client` getter throws when nothing has connected, and the
-// route handlers reach for it on every create/update. express-async-errors
-// forwards that throw to the common errorHandler, whose non-CustomError branch
+// route handlers reach for it on every create/update. Express 5 forwards that
+// rejected async handler to the common errorHandler, whose non-CustomError branch
 // answers 400 — which is why these routes returned 400 instead of 201/200 with
 // no NATS server in the test environment.
 //
