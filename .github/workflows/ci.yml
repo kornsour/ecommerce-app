@@ -1,6 +1,6 @@
 name: CI
 
-# Repo-local CI rather than the shared kornsour/gh-automation ci.yml: that one
+# Repo-local CI rather than the shared lurking-walrus/gh-automation ci.yml: that one
 # assumes a single pnpm package with Biome and Vitest, and this repo is a
 # four-service npm monorepo on Jest with no root package.json.
 
